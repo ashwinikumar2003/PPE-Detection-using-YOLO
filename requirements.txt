@@ -1,4 +1,8 @@
+streamlit
+opencv-python
+Pillow
 ultralytics
-io
-base64
+pandas
 requests
+io
+base65
