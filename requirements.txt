@@ -1,1 +1,5 @@
-
+PIL
+ultralytics
+io
+base64
+requests
