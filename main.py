@@ -1,5 +1,7 @@
 import requests
 import streamlit as st
+import ultralytics
+import PIL
 from PIL import Image, ImageDraw
 from ultralytics import YOLO
 import io
