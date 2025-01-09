@@ -4,3 +4,4 @@ Pillow
 ultralytics
 pandas
 requests
+cv2
