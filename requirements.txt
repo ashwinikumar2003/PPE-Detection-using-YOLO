@@ -1,4 +1,4 @@
-PIL
+pillow
 ultralytics
 io
 base64
