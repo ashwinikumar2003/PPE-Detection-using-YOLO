@@ -4,3 +4,5 @@ Pillow
 ultralytics
 pandas
 requests
+torch
+torchvision
