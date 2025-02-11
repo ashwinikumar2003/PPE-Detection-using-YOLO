@@ -7,7 +7,7 @@ from ultralytics import YOLO
 import io
 import base64
 
-model = YOLO("yolo11n.pt")
+model = YOLO("best.pt")
 
 class_names = ['boots', 'gloves', 'helmet', 'human', 'vest']
 
