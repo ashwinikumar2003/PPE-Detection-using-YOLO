@@ -71,5 +71,5 @@ if image_mode is not None:
             st.image(image.resize((image.width * 2, image.height * 2)), caption="Detected PPE", use_column_width=True)
 
 st.markdown("---")
-st.markdown("## About this App")
+st.markdown("## About the App")
 st.markdown("This app uses a YOLO model to detect Personal Protective Equipment (PPE) in images.")
