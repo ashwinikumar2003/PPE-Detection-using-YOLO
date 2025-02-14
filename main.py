@@ -73,3 +73,69 @@ if image_mode is not None:
 st.markdown("---")
 st.markdown("## About the App")
 st.markdown("This app uses a YOLO model to detect Personal Protective Equipment (PPE) in images.")
+
+
+#### 2 
+import streamlit as st
+import cv2
+import numpy as np
+from PIL import Image
+from ultralytics import YOLO
+
+# Load the YOLO model
+model = YOLO("best.pt")
+
+# Define class names
+class_names = ['boots', 'gloves', 'helmet', 'human', 'vest']
+
+# Streamlit App Title
+st.title("PPE Detection with YOLO (Live)")
+
+# Start webcam capture
+st.sidebar.header("Webcam Options")
+start_webcam = st.sidebar.button("Start Webcam")
+stop_webcam = st.sidebar.button("Stop Webcam")
+
+# Initialize webcam
+if "webcam_active" not in st.session_state:
+    st.session_state.webcam_active = False
+
+if start_webcam:
+    st.session_state.webcam_active = True
+if stop_webcam:
+    st.session_state.webcam_active = False
+
+frame_window = st.image([])
+
+if st.session_state.webcam_active:
+    cap = cv2.VideoCapture(0)  # Open webcam
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            st.error("Failed to capture frame from webcam")
+            break
+        
+        # Convert frame from BGR to RGB
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        
+        # Perform PPE detection
+        results = model(frame_rgb)
+        
+        for result in results:
+            boxes = result.boxes.xyxy.cpu().numpy()
+            confidences = result.boxes.conf.cpu().numpy()
+            classes = result.boxes.cls.cpu().numpy()
+            
+            for box, conf, cls in zip(boxes, confidences, classes):
+                x1, y1, x2, y2 = map(int, box)
+                label = f"{class_names[int(cls)]} {conf:.2f}"
+                
+                # Draw bounding box and label
+                cv2.rectangle(frame_rgb, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                cv2.putText(frame_rgb, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        
+        # Display processed frame
+        frame_window.image(frame_rgb, channels="RGB")
+    
+    cap.release()
+    cv2.destroyAllWindows()
